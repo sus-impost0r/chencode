@@ -74,7 +74,8 @@ static ssize_t try_read(int fd, void *buf, size_t len) {
     size_t n, t = 0;
     while(t < len) {
 	n = read(fd, buf + t, len - t);
-	if(n <= 0) return n;
+	if(n < 0) return n;
+	if(n == 0) break;
 	t += n;
     }
     return t;
@@ -86,6 +87,7 @@ static ssize_t try_write(int fd, const void *buf, size_t len) {
     while(t < len) {
 	n = write(fd, buf + t, len - t);
 	if(n <= 0) return n;
+	if(n == 0) break;
 	t += n;
     }
     return t;
