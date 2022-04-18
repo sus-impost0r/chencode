@@ -16,6 +16,9 @@ int main(void) {
     if(n < 0) {
 	if(n == -3)
 	    puts("Checksum error!");
+	else if(n == -4) {
+	    return 0;
+	}
 	else
 	    perror("read");
 	return 1;

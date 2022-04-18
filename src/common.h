@@ -99,6 +99,12 @@ static ssize_t write_block(int fd, void *data, size_t len) {
     unsigned char *p = data;
     ssize_t n;
     unsigned char bha[3];
+
+    if(len == 0) {
+	bh.crc = 0;
+	bh.len = 0;
+	return 3;
+    }
     
     bh.crc = crc8(0xFF, p, len);
     bh.len = len;
@@ -124,6 +130,9 @@ static ssize_t read_block(int fd, void *data, size_t avail) {
     if(bh.len > avail) {
 	errno = E2BIG;
 	return -2;
+    }
+    if(bh.len == 0) {
+	return -4;
     }
     
    n = try_read(fd, p, bh.len);
